@@ -1,17 +1,29 @@
-#include <fstream>
- #include <string>
-#include <iostream>
-using namespace std;
-void copier(string chemin1,string chemin2)
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+int main(int argc, char *argv[])
 {
-   ifstream in{chemin1 };
-   ofstream out{chemin2 };
-   string s;
-   while (getline(in, s))
-      out << s << endl;
-}
-int main() {
 
- copier("fichier1.txt","fichier2.txt");
+int pid = fork();
+
+if (pid < 0)
+{
+
+printf("Erreur de création du processus fils \n");
+exit(1);
+}
+if (pid == 0)
+{
+
+printf("Je suis le processus fils (%d), le pid de mon père est : (%d)\n", getpid(), getppid());
+}
+else
+{
+
+printf("Je suis le processus père (%d), le pid de mon fils est: (%d)\n", getpid(), pid);
+}
 return 0;
 }
